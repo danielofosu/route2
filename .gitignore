@@ -1,0 +1,23 @@
+/target/
+/target_test/
+/apps/macos/prebuilt/
+*.route2-events.jsonl
+route2-events.jsonl
+*.log
+.audit-target/
+.codex_home/
+docs/benchmarks/scratch/
+
+# Local agent instructions - keep off GitHub
+AGENTS.md
+agents.md
+
+# Local runtimes, caches, and generated observations
+/parquetdeps/
+/.route2/runtime/
+/.route2/observations/
+.env
+.env.*
+__pycache__/
+*.pyc
+

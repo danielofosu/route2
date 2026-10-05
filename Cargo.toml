@@ -1,0 +1,20 @@
+[package]
+name = "route2"
+version = "0.1.0"
+edition = "2021"
+description = "Automatic local reasoning-effort routing for Codex on macOS"
+license = "MIT"
+publish = false
+default-run = "route2"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[lib]
+name = "route2"
+path = "src/lib.rs"
+
+[[bin]]
+name = "route2"
+path = "src/main.rs"

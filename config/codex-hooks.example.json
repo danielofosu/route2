@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PostToolUse": [{
+      "hooks": [{"type": "command", "command": "node /ABSOLUTE/PATH/route2/scripts/route2_hook.mjs --event-dir /ABSOLUTE/PATH/route2/target/hook-events"}]
+    }],
+    "UserPromptSubmit": [{
+      "hooks": [{"type": "command", "command": "node /ABSOLUTE/PATH/route2/scripts/route2_hook.mjs --event-dir /ABSOLUTE/PATH/route2/target/hook-events"}]
+    }]
+  }
+}

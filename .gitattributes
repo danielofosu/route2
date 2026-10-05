@@ -1,0 +1,4 @@
+# Routing and benchmark provenance hashes must survive platform checkouts.
+* text=auto eol=lf
+# Prediction streams are preserved as exact artifacts, never normalized.
+*.jsonl -text

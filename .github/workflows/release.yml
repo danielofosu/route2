@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    name: macOS arm64 package
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build release binary
+        run: cargo build --release --locked
+
+      - name: Smoke check binary
+        run: |
+          ./target/release/route2 validate
+          ./target/release/route2 tiers > /dev/null
+
+      - name: Build menu-bar companion
+        run: |
+          mkdir -p apps/macos/prebuilt
+          swiftc -O -swift-version 5 -target arm64-apple-macosx13.0 \
+            apps/macos/MenuBarState.swift apps/macos/main.swift \
+            -o apps/macos/prebuilt/Route2Menu
+
+      - name: Stage package
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          PKG="route2-${TAG}-macos-arm64"
+          mkdir -p "$PKG/bin"
+          cp target/release/route2 "$PKG/bin/route2"
+          cp -R scripts "$PKG/scripts"
+          cp -R config "$PKG/config"
+          cp -R apps "$PKG/apps"
+          cp README.md LICENSE "$PKG/"
+          tar -czf "${PKG}.tar.gz" "$PKG"
+          shasum -a 256 "${PKG}.tar.gz" > "${PKG}.tar.gz.sha256"
+
+      - name: Verify packaged layout resolves scripts
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          PKG="route2-${TAG}-macos-arm64"
+          test -f "$PKG/scripts/install_codex.py"
+          test -x "$PKG/apps/macos/prebuilt/Route2Menu"
+          "$PKG/bin/route2" validate
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          PKG="route2-${TAG}-macos-arm64"
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --generate-notes \
+            --notes "Prebuilt Route2 for macOS on Apple Silicon. Extract, then run \`$PKG/bin/route2 install-codex --install\` from the extracted directory; the binary finds its scripts relative to itself. Setup still downloads the classifier weights and Python dependencies on first run. The binary is unsigned: if macOS blocks it after a browser download, run \`xattr -d com.apple.quarantine $PKG/bin/route2\`." \
+            "${PKG}.tar.gz" \
+            "${PKG}.tar.gz.sha256"

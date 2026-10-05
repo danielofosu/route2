@@ -1,0 +1,66 @@
+[
+  {
+    "id": "whitespace_and_formatting",
+    "description": "Whitespace, indentation, and formatting fixes route to fast lightweight model",
+    "pattern": "whitespace",
+    "task_class": "small",
+    "priority": 100,
+    "confidence": 0.98
+  },
+  {
+    "id": "docs_and_typos",
+    "description": "Documentation, typos, formatting, and docstrings route to fast lightweight model",
+    "pattern": "typo",
+    "task_class": "small",
+    "priority": 100,
+    "confidence": 0.98
+  },
+  {
+    "id": "docstring_fix",
+    "description": "Docstrings and comments route to small model",
+    "pattern": "docstring",
+    "task_class": "small",
+    "priority": 100,
+    "confidence": 0.98
+  },
+  {
+    "id": "unit_test_simple",
+    "description": "Single unit test fixes or assertions route to small model",
+    "pattern": "assertion",
+    "task_class": "small",
+    "priority": 90,
+    "confidence": 0.95
+  },
+  {
+    "id": "security_audit",
+    "description": "Security vulnerabilities and token leaks require frontier reasoning model",
+    "pattern": "security",
+    "task_class": "safety_sensitive",
+    "priority": 150,
+    "confidence": 0.99
+  },
+  {
+    "id": "architecture_migration",
+    "description": "Architectural refactoring and migrations require frontier reasoning model",
+    "pattern": "migration",
+    "task_class": "large",
+    "priority": 140,
+    "confidence": 0.99
+  },
+  {
+    "id": "concurrency_deadlock",
+    "description": "Concurrency race conditions and thread synchronization require frontier reasoning model",
+    "pattern": "concurrency",
+    "task_class": "large",
+    "priority": 140,
+    "confidence": 0.99
+  },
+  {
+    "id": "symbolic_algorithm",
+    "description": "Symbolic algebra and mathematical theorem proving algorithms require frontier reasoning model",
+    "pattern": "symbolic",
+    "task_class": "large",
+    "priority": 135,
+    "confidence": 0.98
+  }
+]

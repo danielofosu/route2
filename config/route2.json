@@ -1,0 +1,50 @@
+{
+  "policy_version": "route2-v0.1.0",
+  "backend": "decision",
+  "target_model": "gpt-6.1-sol",
+  "decision": {
+    "endpoint": "http://127.0.0.1:8009/v1/systemone",
+    "model": "vllm-sr/Decision-2.0-Kai-0.6B",
+    "timeout_ms": 30000,
+    "command": "uv",
+    "args": [
+      "run",
+      "--directory",
+      "{route2_source_dir}",
+      "--with",
+      "transformers==5.17.0",
+      "--with",
+      "torch==2.12.0",
+      "--with",
+      "safetensors==0.8.0",
+      "python",
+      "scripts/decision_server.py",
+      "--port",
+      "8009"
+    ],
+    "idle_timeout_secs": 0,
+    "startup_timeout_ms": 900000
+  },
+  "effort_policy": {
+    "small": {
+      "reasoning_effort": "low",
+      "window_generations": 5
+    },
+    "semi_big": {
+      "reasoning_effort": "medium",
+      "window_generations": 2
+    },
+    "large": {
+      "reasoning_effort": "high",
+      "window_generations": 1
+    },
+    "safety_sensitive": {
+      "reasoning_effort": "max",
+      "window_generations": 1
+    },
+    "decision": {
+      "reasoning_effort": "low",
+      "window_generations": 5
+    }
+  }
+}

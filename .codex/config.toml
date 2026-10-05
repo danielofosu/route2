@@ -1,0 +1,4 @@
+# Portable Codex MCP example. Install route2 on PATH first.
+[mcp_servers.route2]
+command = "route2"
+args = ["--mcp"]
